@@ -1,0 +1,36 @@
+const BaseObject = require('./base');
+const ProxyObject = require('./base').ProxyObject;
+{{#children}}
+const {{className}} = require('./{{className}}');
+{{/children}}
+
+class {{className}} extends BaseObject {
+  constructor(options{{#parameter}}, {{parameter}}{{/parameter}}) {
+    super(options);
+    this.options = options;
+    this.path = `${ options ? options.path : ''}/{{className}}`;
+    {{#parameter}}
+    if ({{parameter}}) this.path = `${ this.path }/${ {{ parameter }} }`;
+    {{/parameter}}
+  }
+
+{{#children}}
+  {{className}}({{#parameter}}{{parameter}}{{/parameter}}) {
+    const options = Object.assign({}, this.options, { path: this.path });
+    return new {{className}}(options{{#parameter}}, {{parameter}}{{/parameter}});
+  }
+{{#resourceAliases}}
+  {{.}}({{#parameter}}{{parameter}}{{/parameter}}) {
+    return this.{{className}}({{#parameter}}{{parameter}}{{/parameter}});
+  }
+{{/resourceAliases}}
+{{/children}}
+
+{{#methods}}
+  {{.}}(optionsOrCb, cb) {
+    super.{{.}}(optionsOrCb, cb);
+  }
+{{/methods}}
+}
+
+module.exports = {{className}};
