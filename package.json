@@ -30,7 +30,7 @@
     "assign-deep": "^0.4.5",
     "async": "^2.4.1",
     "js-yaml": "^3.7.0",
-    "request": "^2.79.0"
+    "request": "request/request"
   },
   "devDependencies": {
     "assume": "^1.4.1",
